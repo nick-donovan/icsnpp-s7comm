@@ -161,15 +161,18 @@ redef record connection += {
 };
 
 # All these protocols operate on TCP port 102
-const ports = {
-    102/tcp,
-};
+export{
+    const ports = { 102/tcp } &redef;
+}
+
 redef likely_server_ports += { ports };
 
 ###################################################################################################
 ####  Defines Log Streams for cotp.log, s7comm.log, s7comm_read_szl.log, and s7comm_plus.log  #####
 ###################################################################################################
 event zeek_init() &priority=5 {
+    Analyzer::register_for_ports(Analyzer::ANALYZER_S7COMM_TCP, ports);
+
     Log::create_stream(S7COMM::LOG_COTP, [$columns=COTP,
                                           $ev=log_cotp,
                                           $path="cotp",
@@ -200,7 +203,6 @@ event zeek_init() &priority=5 {
                                             $path="s7comm_plus",
                                             $policy=log_policy_s7comm_plus]);
 
-    # Analyzer::register_for_ports(Analyzer::ANALYZER_S7COMM_TCP, ports);
 }
 
 ###################################################################################################
