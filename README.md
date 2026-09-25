@@ -270,6 +270,14 @@ The table below shows an example of these fields in the log files. The first log
 
 S7COMM contains two functions for sending and receiving files: Upload and Download-Block. This plugin will extract files sent via these two functions and pass the extracted files to Zeek's file analysis framework.
 
+## Port Override
+
+If so desired, the default s7comm traffic port can be overridden by redefining the `ports` variable, e.g.:
+
+```bash
+zeek -Cr testing/traces/s7comm_plus_port_change.pcap icsnpp/s7comm "S7COMM::ports={ 5678/tcp }" 
+```
+
 ## Coverage
 
 See [Logging Capabilities](#logging-capabilities) for detailed information of the parser coverage.
